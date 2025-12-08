@@ -69,11 +69,6 @@
             backdrop-filter: blur(5px);
         }
 
-        /* Notation Diagram Styles */
-        .move-diagram {
-            display: none;
-        }
-
         /* Case-specific display */
         .cube-scenario {
             display: flex;
@@ -109,13 +104,12 @@
             text-align: center;
             border: 1px solid #374151;
         }
-
     </style>
 </head>
 <body class="flex flex-col h-screen overflow-hidden">
 
-    <!-- Header -->
-    <header class="bg-gray-900 p-4 shadow-lg z-10 flex justify-between items-center border-b border-gray-700">
+    <!-- Header (Borda mais escura) -->
+    <header class="bg-gray-900 p-4 shadow-lg z-10 flex justify-between items-center border-b border-gray-800">
         <div class="flex items-center gap-3">
             <div class="w-8 h-8 grid grid-cols-2 gap-0.5 animate-pulse">
                 <div class="bg-red-500 rounded-sm"></div>
@@ -139,19 +133,21 @@
         <!-- Content injected via JS -->
     </main>
 
-    <!-- Navigation Footer -->
-    <footer class="bg-gray-900 p-4 border-t border-gray-700">
+    <!-- Navigation Footer (Borda mais escura) -->
+    <footer class="bg-gray-900 p-4 border-t border-gray-800">
         <div class="max-w-2xl mx-auto flex items-center justify-between gap-4">
             <button id="btn-prev" onclick="prevStep()" class="nav-btn px-4 py-2 rounded-lg bg-gray-700 text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed font-semibold">
                 <i class="fas fa-chevron-left mr-2"></i> Anterior
             </button>
 
-            <div class="flex flex-col items-center flex-1">
+            <!-- Contêiner do Progresso -->
+            <div id="progress-container" class="flex flex-col items-center flex-1">
                 <span class="text-xs text-gray-400 uppercase tracking-wider mb-1">Progresso</span>
                 <div class="w-full h-2 bg-gray-700 rounded-full overflow-hidden">
                     <div id="progress-bar" class="h-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-500" style="width: 0%"></div>
                 </div>
-                <span id="step-indicator" class="text-xs mt-1 font-mono text-blue-400">0/9</span>
+                <!-- O indicador de passo será gerenciado por JS -->
+                <span id="step-indicator" class="text-xs mt-1 font-mono text-blue-400">1/9</span>
             </div>
 
             <button id="btn-next" onclick="nextStep()" class="nav-btn px-4 py-2 rounded-lg bg-blue-600 text-white shadow-lg shadow-blue-900/50 hover:bg-blue-500 font-semibold">
@@ -166,7 +162,8 @@
             <button onclick="toggleNotation()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
                 <i class="fas fa-times text-xl"></i>
             </button>
-            <h2 class="text-2xl font-bold mb-4 text-white border-b border-gray-700 pb-2">Linguagem Secreta do Cubo (Notação)</h2>
+
+            <h2 class="text-2xl font-bold mb-4 text-white pb-2">Linguagem Secreta do Cubo (Notação)</h2>
             <p class="text-gray-400 text-sm mb-6">Em vez de dizer "Gire a face direita para cima", usamos letras! A direção do giro é sempre como se você estivesse olhando a face.</p>
 
             <div class="space-y-6">
@@ -175,58 +172,75 @@
                 <div class="bg-gray-900 p-4 rounded-lg border border-gray-700">
                     <h3 class="text-xl font-bold text-yellow-400 mb-2">Regras de Giro:</h3>
                     <ul class="text-sm list-disc pl-5 space-y-1">
-                        <li><strong>Letra (R, U, F):</strong> Giro de 90° no **sentido horário** (para frente), olhando diretamente para a face.</li>
-                        <li><strong>Letra' (R', U', F'):</strong> Giro de 90° no **sentido anti-horário** (para trás).</li>
-                        <li><strong>Letra2 (R2, U2, F2):</strong> Giro de 180° (meia volta).</li>
+                        <li><strong>Letra (R, U, F, etc.):</strong> Giro de 90° no **sentido horário** (para frente), olhando diretamente para a face.</li>
+                        <li><strong>Letra' (R', U', F', etc.):</strong> Giro de 90° no **sentido anti-horário** (para trás).</li>
+                        <li><strong>Letra2 (R2, U2, F2, etc.):</strong> Giro de 180° (meia volta).</li>
                     </ul>
                 </div>
 
-                <!-- Movimentos Principais com Diagramas Visuais -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Movimentos Principais com Diagramas Visuais (6 Faces) -->
+                <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
                     <!-- R (Right) - Vermelho -->
                     <div class="bg-gray-700 p-4 rounded-lg text-center shadow-lg">
                         <span class="text-4xl font-extrabold text-red-400 block mb-2">R / R'</span>
-                        <span class="text-sm uppercase tracking-wider block mb-3">Face da Direita (Visão Frontal)</span>
+                        <span class="text-sm uppercase tracking-wider block mb-3">Face da Direita (Vista Frontal)</span>
                         <div class="flex flex-col items-center space-y-2">
                             <div id="diag-r-cw" class="w-full"></div>
                             <div id="diag-r-ccw" class="w-full"></div>
                         </div>
                     </div>
 
-                    <!-- U (Up) - Azul -->
+                    <!-- L (Left) - Laranja -->
                     <div class="bg-gray-700 p-4 rounded-lg text-center shadow-lg">
-                        <span class="text-4xl font-extrabold text-blue-400 block mb-2">U / U'</span>
-                        <span class="text-sm uppercase tracking-wider block mb-3">Face Superior (Visão Frontal)</span>
+                        <span class="text-4xl font-extrabold text-orange-400 block mb-2">L / L'</span>
+                        <span class="text-sm uppercase tracking-wider block mb-3">Face da Esquerda (Vista Frontal)</span>
+                        <div class="flex flex-col items-center space-y-2">
+                            <div id="diag-l-cw" class="w-full"></div>
+                            <div id="diag-l-ccw" class="w-full"></div>
+                        </div>
+                    </div>
+
+                    <!-- U (Up) - Amarelo -->
+                    <div class="bg-gray-700 p-4 rounded-lg text-center shadow-lg">
+                        <span class="text-4xl font-extrabold text-yellow-300 block mb-2">U / U'</span>
+                        <span class="text-sm uppercase tracking-wider block mb-3">Face Superior (Vista Frontal)</span>
                         <div class="flex flex-col items-center space-y-2">
                             <div id="diag-u-cw" class="w-full"></div>
                             <div id="diag-u-ccw" class="w-full"></div>
                         </div>
                     </div>
 
+                    <!-- D (Down) - Branco -->
+                    <div class="bg-gray-700 p-4 rounded-lg text-center shadow-lg">
+                        <span class="text-4xl font-extrabold text-white block mb-2">D / D'</span>
+                        <span class="text-sm uppercase tracking-wider block mb-3">Face Inferior (Vista Frontal)</span>
+                        <div class="flex flex-col items-center space-y-2">
+                            <div id="diag-d-cw" class="w-full"></div>
+                            <div id="diag-d-ccw" class="w-full"></div>
+                        </div>
+                    </div>
+
                     <!-- F (Front) - Verde -->
                     <div class="bg-gray-700 p-4 rounded-lg text-center shadow-lg">
                         <span class="text-4xl font-extrabold text-green-400 block mb-2">F / F'</span>
-                        <span class="text-sm uppercase tracking-wider block mb-3">Face Frontal (Visão Frontal)</span>
+                        <span class="text-sm uppercase tracking-wider block mb-3">Face Frontal (Vista Frontal)</span>
                         <div class="flex flex-col items-center space-y-2">
                             <div id="diag-f-cw" class="w-full"></div>
                             <div id="diag-f-ccw" class="w-full"></div>
                         </div>
                     </div>
 
-                </div>
-
-                <!-- Notas sobre outras faces (L, D, B) -->
-                <div class="bg-gray-900 p-4 rounded-lg border border-gray-700 mt-6">
-                    <h3 class="text-xl font-bold text-yellow-400 mb-2">Outras Faces (L, D, B)</h3>
-                    <p class="text-sm mb-2">
-                        O conceito é o mesmo: o giro é sempre no <strong>sentido horário (CW)</strong> quando você está olhando diretamente para a face em questão. O giro no sentido anti-horário (CCW) usa o apóstrofo (').
-                    </p>
-                    <div class="grid grid-cols-3 gap-2 text-center text-xs font-mono font-bold text-white">
-                        <span class="bg-purple-700 p-1 rounded">L (Esquerda): CW faz a coluna Subir.</span>
-                        <span class="bg-purple-700 p-1 rounded">D (Base): CW faz a base girar para a Direita.</span>
-                        <span class="bg-purple-700 p-1 rounded">B (Traseira): CW faz a face girar para a Esquerda.</span>
+                    <!-- B (Back) - Azul -->
+                    <div class="bg-gray-700 p-4 rounded-lg text-center shadow-lg">
+                        <span class="text-4xl font-extrabold text-blue-400 block mb-2">B / B'</span>
+                        <span class="text-sm uppercase tracking-wider block mb-3">Face Traseira (Vista Frontal)</span>
+                        <div class="flex flex-col items-center space-y-2">
+                            <div id="diag-b-cw" class="w-full"></div>
+                            <div id="diag-b-ccw" class="w-full"></div>
+                        </div>
                     </div>
+
                 </div>
 
                 <!-- Rotação do Cubo -->
@@ -245,10 +259,11 @@
     </div>
 
     <script>
-        // --- DATA: Tutorial Content ---
+        // --- DATA: Tutorial Content (Passos Reindexados) ---
         const tutorialSteps = [
+            // INTRODUÇÃO (Não conta como passo de solução)
             {
-                title: "Bem-vindo(a) ao CubeMaster", // Título ajustado
+                title: "Boas-vindas ao CubeMaster",
                 content: `
                     <div class="text-center py-10 max-w-lg mx-auto">
                         <h1 class="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-yellow-400 mb-4">
@@ -260,23 +275,24 @@
 
                         <div class="bg-gray-800 p-6 rounded-xl border border-blue-600/50 shadow-xl">
                             <i class="fas fa-hand-point-right text-4xl text-blue-400 mb-3"></i>
-                            <h3 class="text-xl font-bold text-white mb-2">9 Passos Simples</h3>
+                            <h3 class="text-xl font-bold text-white mb-2">9 Passos de Solução</h3>
                             <p class="text-sm text-gray-400">
-                                Siga cada passo com calma. Lembre-se destas frases para se manter motivado:
+                                Pressione 'Próximo' para começar com o nosso <strong>Passo 1: Entendendo as Peças</strong>.
                             </p>
                             <ul class="text-sm text-left mt-3 space-y-1 list-disc list-inside text-gray-300">
-                                <li><strong>Acredite em si:</strong> A confiança é o primeiro passo para o sucesso.</li>
+                                <li><strong>Acredite em si:</strong> A confiança é o primeiro passo.</li>
                                 <li><strong>Foco total:</strong> Mantenha a concentração em um passo de cada vez.</li>
                                 <li><strong>A prática leva à magia:</strong> Repita até que se torne fácil!</li>
                             </ul>
                         </div>
 
                         <p class="text-xs text-gray-500 mt-6">
-                            Pressione 'Próximo' para começar com o básico do cubo.
+                            Você está a apenas 9 passos da solução!
                         </p>
                     </div>
                 `
             },
+            // PASSO 1: Entendendo as Peças (Passo de Solução 1)
             {
                 title: "Passo 1: Entendendo as Peças",
                 content: `
@@ -299,7 +315,7 @@
                                     <div class="sticker c-x"></div><div class="sticker c-x"></div><div class="sticker c-x"></div>
                                 </div>
                                 <span class="mt-2 text-sm font-bold text-red-400">Meios (2 cores)</span>
-                                <p class="text-xs text-gray-400">São as nossas <strong>Pétalas</strong> Brancas. Ficam no meio das laterais.</p>
+                                <p class="text-xs text-gray-400">Sãos as nossas <strong>Pétalas</strong> Brancas. Ficam no meio das laterais.</p>
                             </div>
                             <div class="flex flex-col items-center">
                                 <div class="cube-face">
@@ -315,6 +331,7 @@
                     </div>
                 `
             },
+            // PASSO 2: A Margarida (Passo de Solução 2)
             {
                 title: "Passo 2: A Margarida (A Flor)",
                 content: `
@@ -331,7 +348,7 @@
                             </div>
                         </div>
 
-                        <h4 class="text-xl font-bold text-white mb-4 border-b border-gray-700 pb-2">Onde a Pétala pode estar:</h4>
+                        <h4 class="text-xl font-bold text-white mb-4 border-b border-gray-900 pb-2">Onde a Pétala pode estar:</h4>
                         <p class="text-sm text-gray-300 mb-4">Você vai procurar uma Pétala branca por vez e movê-la para o topo.</p>
 
                         <!-- Cenário 1: Peça na Camada do Meio (Barriga) -->
@@ -407,6 +424,7 @@
                     </div>
                 `
             },
+            // PASSO 3: Cruz Branca Perfeita (Passo de Solução 3)
             {
                 title: "Passo 3: A Cruz Branca Perfeita",
                 content: `
@@ -438,6 +456,7 @@
                     </div>
                 `
             },
+            // PASSO 4: Cantinhos da 1ª Camada (Passo de Solução 4)
             {
                 title: "Passo 4: Cantinhos da 1ª Camada",
                 content: `
@@ -467,6 +486,7 @@
                     </div>
                 `
             },
+            // PASSO 5: A Segunda Camada (Passo de Solução 5)
             {
                 title: "Passo 5: A Segunda Camada",
                 content: `
@@ -501,6 +521,7 @@
                     </div>
                 `
             },
+            // PASSO 6: Cruz Amarela (Passo de Solução 6)
             {
                 title: "Passo 6: Cruz Amarela",
                 content: `
@@ -548,6 +569,7 @@
                     </div>
                 `
             },
+            // PASSO 7: Alinhar a Cruz Amarela (Passo de Solução 7)
             {
                 title: "Passo 7: Alinhar a Cruz Amarela",
                 content: `
@@ -573,6 +595,7 @@
                     </div>
                 `
             },
+            // PASSO 8: Posicionar Cantinhos Amarelos (Passo de Solução 8)
             {
                 title: "Passo 8: Posicionar Cantinhos Amarelos",
                 content: `
@@ -602,15 +625,16 @@
                     </div>
                 `
             },
+            // PASSO 9: Virar os Cantinhos (Passo de Solução 9)
             {
-                title: "Passo 9: Virar os Cantinhos",
+                title: "Passo 9: Virar os Cantinhos (Final!)",
                 content: `
                     <div class="max-w-xl w-full text-center">
                         <p class="mb-4 font-bold text-red-400 uppercase tracking-widest animate-pulse">Este é o Final! Não entre em Pânico!</p>
                         <p class="mb-4 text-sm">O objetivo é virar o adesivo amarelo de cada cantinho para cima. <strong class="text-white">NÃO GIRE O CUBO INTEIRO NAS MÃOS!</strong></p>
 
                         <div class="bg-gray-800 p-6 rounded-xl border-2 border-red-500/50 mb-4">
-                            <p class="text-sm font-bold text-yellow-400 mb-3 border-b border-gray-700 pb-2">FOCO: Apenas um cantinho por vez!</p>
+                            <p class="text-sm font-bold text-yellow-400 mb-3 border-b border-gray-900 pb-2">FOCO: Apenas um cantinho por vez!</p>
 
                             <p class="text-sm mb-3">1. Coloque o cantinho "errado" (que precisa virar) na posição <strong>Frente-Direita-Topo</strong>.</p>
                             <p class="text-sm mb-3">2. Faça o movimento Mágico, repetindo até o Amarelo olhar para cima:</p>
@@ -637,6 +661,7 @@
                     </div>
                 `
             },
+            // FINAL (Não conta como passo de solução)
             {
                 title: "Parabéns!",
                 content: `
@@ -654,41 +679,58 @@
 
         // --- GLOBAL APP LOGIC ---
         let currentStep = 0;
+        const totalSolvingSteps = 9; // Total de passos de SOLUÇÃO (Excluindo Introdução e Final)
 
         function renderStep() {
             const container = document.getElementById('main-container');
             const stepData = tutorialSteps[currentStep];
             const totalScreens = tutorialSteps.length;
-            const totalSolvingSteps = totalScreens - 2; // Intro and Congrats don't count
-            const solvingStepNumber = Math.max(0, currentStep - 1); // 0 for Intro/Passo 1, 1 for Passo 2...
+
+            // --- PROGRESS LOGIC ---
+            let solvingStepNumber = 0;
+            let percentage = 0;
+
+            // Check if we are on the first or last screen (non-solving steps)
+            if (currentStep === 0) {
+                 // Introdução
+                solvingStepNumber = 0;
+                percentage = 0;
+                document.getElementById('step-indicator').innerText = `Início`;
+            } else if (currentStep === totalScreens - 1) {
+                // Último Passo: 100% de progresso
+                solvingStepNumber = totalSolvingSteps;
+                percentage = 100;
+                document.getElementById('step-indicator').innerText = "Concluído!";
+            } else {
+                // Passos de Solução (1 a 9)
+                // currentStep 1 is Solving Step 1, currentStep 2 is Solving Step 2, etc.
+                solvingStepNumber = currentStep;
+                percentage = (solvingStepNumber / totalSolvingSteps) * 100;
+                document.getElementById('step-indicator').innerText = `Passo ${solvingStepNumber}/${totalSolvingSteps}`;
+            }
 
             // Update Progress UI
-            // Calculate progress based on total screens
-            const percentage = (currentStep / (totalScreens - 1)) * 100;
             document.getElementById('progress-bar').style.width = `${percentage}%`;
 
-            // Display progress for the 9 core steps
-            document.getElementById('step-indicator').innerText = `Passos de Solução: ${solvingStepNumber}/${totalSolvingSteps}`;
-
-
-            // Buttons State
+            // --- BUTTONS STATE ---
             document.getElementById('btn-prev').disabled = currentStep === 0;
 
             const btnNext = document.getElementById('btn-next');
             if (currentStep === totalScreens - 1) {
+               // Último Passo: Recomeçar
                btnNext.innerHTML = 'Recomeçar <i class="fas fa-redo ml-2"></i>';
                btnNext.onclick = () => { currentStep = 0; renderStep(); };
                btnNext.classList.remove('bg-blue-600');
                btnNext.classList.add('bg-green-600', 'shadow-green-900/50');
-               document.getElementById('step-indicator').innerText = "Concluído!";
             } else {
+               // Outros Passos
                btnNext.innerHTML = 'Próximo <i class="fas fa-chevron-right ml-2"></i>';
                btnNext.onclick = nextStep;
                btnNext.classList.add('bg-blue-600');
                btnNext.classList.remove('bg-green-600', 'shadow-green-900/50');
             }
 
-            // Inject Content with Fade Effect
+            // --- INJECT CONTENT ---
             container.innerHTML = '';
 
             const contentWrapper = document.createElement('div');
@@ -738,7 +780,7 @@
         });
 
 
-        // --- NOTATION DIAGRAM LOGIC (UPDATED) ---
+        // --- NOTATION DIAGRAM LOGIC ---
         function getCubeFaceHTML(stickers, centerColor, moveType, isCW) {
             let html = `<div class="w-24 h-24 mx-auto my-1 border-2 border-gray-500 relative overflow-hidden flex items-center justify-center">`;
 
@@ -747,16 +789,19 @@
 
             stickers.forEach((stickerClass, index) => {
                 const isCenter = index === 4;
-                // Use the provided color class for all stickers
                 const finalClass = isCenter ? centerColor : stickerClass;
                 let highlightClass = '';
 
                 // Add visual hints for the rotating layer (based on Front Face view)
                 if (moveType === 'R') {
                     if (index % 3 === 2) highlightClass = 'border-2 border-yellow-400 shadow-[0_0_8px_rgba(252,211,77,0.7)]'; // Coluna direita
+                } else if (moveType === 'L') {
+                    if (index % 3 === 0) highlightClass = 'border-2 border-yellow-400 shadow-[0_0_8px_rgba(252,211,77,0.7)]'; // Coluna esquerda
                 } else if (moveType === 'U') {
                     if (index < 3) highlightClass = 'border-2 border-yellow-400 shadow-[0_0_8px_rgba(252,211,77,0.7)]'; // Fila superior
-                } else if (moveType === 'F') {
+                } else if (moveType === 'D') {
+                    if (index > 5) highlightClass = 'border-2 border-yellow-400 shadow-[0_0_8px_rgba(252,211,77,0.7)]'; // Fila inferior
+                } else if (moveType === 'F' || moveType === 'B') {
                     highlightClass = 'border-2 border-yellow-400 shadow-[0_0_8px_rgba(252,211,77,0.7)]'; // Toda a face
                 }
 
@@ -764,23 +809,37 @@
             });
             html += `</div>`;
 
-            // Add arrows to show rotation direction
+            // Add arrows to show rotation direction (Viewed from Front Face)
             let iconClass = '';
-            // Para R/R', as setas são posicionadas no lado direito da face (a camada R)
+
+            // R: up/down on right column
             if (moveType === 'R') {
-                iconClass = isCW ? 'fa-arrow-up' : 'fa-arrow-down';
-                // R (Horário) é para CIMA, R' (Anti-Horário) é para BAIXO.
+                iconClass = isCW ? 'fa-arrow-up' : 'fa-arrow-down'; // R (Horário) sobe
                 html += `<i class="fas ${iconClass} text-3xl text-white absolute right-1.5"></i>`;
             }
-            // Para U/U', as setas são posicionadas no topo da face (a camada U movendo horizontalmente)
+            // L: up/down on left column
+            else if (moveType === 'L') {
+                iconClass = isCW ? 'fa-arrow-down' : 'fa-arrow-up'; // L (Horário) desce (vista F)
+                html += `<i class="fas ${iconClass} text-3xl text-white absolute left-1.5"></i>`;
+            }
+            // U: left/right on top row
             else if (moveType === 'U') {
-                iconClass = isCW ? 'fa-arrow-left' : 'fa-arrow-right';
-                // U (Horário) move a camada frontal para a ESQUERDA, U' (Anti-Horário) move para a DIREITA.
+                iconClass = isCW ? 'fa-arrow-left' : 'fa-arrow-right'; // U (Horário) move para a esquerda
                 html += `<i class="fas ${iconClass} text-3xl text-white absolute top-1.5"></i>`;
             }
-            // Para F/F', a rotação é circular na face
+            // D: left/right on bottom row
+            else if (moveType === 'D') {
+                iconClass = isCW ? 'fa-arrow-right' : 'fa-arrow-left'; // D (Horário) move para a direita (vista F)
+                html += `<i class="fas ${iconClass} text-3xl text-white absolute bottom-1.5"></i>`;
+            }
+            // F: circular on the face
             else if (moveType === 'F') {
                 iconClass = isCW ? 'fa-rotate-right' : 'fa-rotate-left';
+                html += `<i class="fas ${iconClass} text-4xl text-white absolute"></i>`;
+            }
+            // B: circular (inverted from F, as it's viewed from the opposite side)
+            else if (moveType === 'B') {
+                iconClass = isCW ? 'fa-rotate-left' : 'fa-rotate-right'; // B (Horário) é Anti-Horário na vista F
                 html += `<i class="fas ${iconClass} text-4xl text-white absolute"></i>`;
             }
 
@@ -789,58 +848,57 @@
         }
 
         function renderNotationDiagrams() {
-            // Cores Únicas conforme solicitado
-            const R_COLOR = 'c-r'; // Red
-            const U_COLOR = 'c-b'; // Blue
-            const F_COLOR = 'c-g'; // Green
+            // Definições de cores para os diagramas (Centro)
+            const R_COLOR = 'c-r'; // Vermelho (Right)
+            const L_COLOR = 'c-o'; // Laranja (Left)
+            const U_COLOR = 'c-y'; // Amarelo (Up)
+            const D_COLOR = 'c-w'; // Branco (Down)
+            const F_COLOR = 'c-g'; // Verde (Front)
+            const B_COLOR = 'c-b'; // Azul (Back)
 
-            // Array com 9 stickers da mesma cor para cada diagrama
+            // Array com 9 stickers da mesma cor para cada diagrama (para ter uma cor de fundo)
             const rStickers = Array(9).fill(R_COLOR);
+            const lStickers = Array(9).fill(L_COLOR);
             const uStickers = Array(9).fill(U_COLOR);
+            const dStickers = Array(9).fill(D_COLOR);
             const fStickers = Array(9).fill(F_COLOR);
+            const bStickers = Array(9).fill(B_COLOR);
 
-
-            // R (Right) - Front Face View: Right column moves UP/DOWN
-            const rDiagram = `
-                <div class="flex flex-col items-center">
-                    <span class="text-xs text-white font-semibold">R (Horário, Coluna Sobe)</span>
-                    ${getCubeFaceHTML(rStickers, R_COLOR, 'R', true)}
-                </div>`;
-            const rPrimeDiagram = `
-                <div class="flex flex-col items-center">
-                    <span class="text-xs text-white font-semibold pt-1">R' (Anti-Horário, Coluna Desce)</span>
-                    ${getCubeFaceHTML(rStickers, R_COLOR, 'R', false)}
-                </div>`;
+            // --- R (Right) ---
+            const rDiagram = `<div class="flex flex-col items-center"><span class="text-xs text-white font-semibold">R (Horário, Sobe)</span>${getCubeFaceHTML(rStickers, R_COLOR, 'R', true)}</div>`;
+            const rPrimeDiagram = `<div class="flex flex-col items-center"><span class="text-xs text-white font-semibold pt-1">R' (Anti-Horário, Desce)</span>${getCubeFaceHTML(rStickers, R_COLOR, 'R', false)}</div>`;
             document.getElementById('diag-r-cw').innerHTML = rDiagram;
             document.getElementById('diag-r-ccw').innerHTML = rPrimeDiagram;
 
-            // U (Up) - Front Face View: Top row moves LEFT/RIGHT
-            const uDiagram = `
-                <div class="flex flex-col items-center">
-                    <span class="text-xs text-white font-semibold">U (Horário, Fila Topo Esquerda)</span>
-                    ${getCubeFaceHTML(uStickers, U_COLOR, 'U', true)}
-                </div>`;
-            const uPrimeDiagram = `
-                <div class="flex flex-col items-center">
-                    <span class="text-xs text-white font-semibold pt-1">U' (Anti-Horário, Fila Topo Direita)</span>
-                    ${getCubeFaceHTML(uStickers, U_COLOR, 'U', false)}
-                </div>`;
+            // --- L (Left) ---
+            const lDiagram = `<div class="flex flex-col items-center"><span class="text-xs text-white font-semibold">L (Horário, Desce)</span>${getCubeFaceHTML(lStickers, L_COLOR, 'L', true)}</div>`;
+            const lPrimeDiagram = `<div class="flex flex-col items-center"><span class="text-xs text-white font-semibold pt-1">L' (Anti-Horário, Sobe)</span>${getCubeFaceHTML(lStickers, L_COLOR, 'L', false)}</div>`;
+            document.getElementById('diag-l-cw').innerHTML = lDiagram;
+            document.getElementById('diag-l-ccw').innerHTML = lPrimeDiagram;
+
+            // --- U (Up) ---
+            const uDiagram = `<div class="flex flex-col items-center"><span class="text-xs text-white font-semibold">U (Horário, Esquerda)</span>${getCubeFaceHTML(uStickers, U_COLOR, 'U', true)}</div>`;
+            const uPrimeDiagram = `<div class="flex flex-col items-center"><span class="text-xs text-white font-semibold pt-1">U' (Anti-Horário, Direita)</span>${getCubeFaceHTML(uStickers, U_COLOR, 'U', false)}</div>`;
             document.getElementById('diag-u-cw').innerHTML = uDiagram;
             document.getElementById('diag-u-ccw').innerHTML = uPrimeDiagram;
 
-            // F (Front) - Front Face View: Face gira CW/CCW
-            const fDiagram = `
-                <div class="flex flex-col items-center">
-                    <span class="text-xs text-white font-semibold">F (Horário, Gira para Direita)</span>
-                    ${getCubeFaceHTML(fStickers, F_COLOR, 'F', true)}
-                </div>`;
-            const fPrimeDiagram = `
-                <div class="flex flex-col items-center">
-                    <span class="text-xs text-white font-semibold pt-1">F' (Anti-Horário, Gira para Esquerda)</span>
-                    ${getCubeFaceHTML(fStickers, F_COLOR, 'F', false)}
-                </div>`;
+            // --- D (Down) ---
+            const dDiagram = `<div class="flex flex-col items-center"><span class="text-xs text-white font-semibold">D (Horário, Direita)</span>${getCubeFaceHTML(dStickers, D_COLOR, 'D', true)}</div>`;
+            const dPrimeDiagram = `<div class="flex flex-col items-center"><span class="text-xs text-white font-semibold pt-1">D' (Anti-Horário, Esquerda)</span>${getCubeFaceHTML(dStickers, D_COLOR, 'D', false)}</div>`;
+            document.getElementById('diag-d-cw').innerHTML = dDiagram;
+            document.getElementById('diag-d-ccw').innerHTML = dPrimeDiagram;
+
+            // --- F (Front) ---
+            const fDiagram = `<div class="flex flex-col items-center"><span class="text-xs text-white font-semibold">F (Horário, Direita)</span>${getCubeFaceHTML(fStickers, F_COLOR, 'F', true)}</div>`;
+            const fPrimeDiagram = `<div class="flex flex-col items-center"><span class="text-xs text-white font-semibold pt-1">F' (Anti-Horário, Esquerda)</span>${getCubeFaceHTML(fStickers, F_COLOR, 'F', false)}</div>`;
             document.getElementById('diag-f-cw').innerHTML = fDiagram;
             document.getElementById('diag-f-ccw').innerHTML = fPrimeDiagram;
+
+            // --- B (Back) ---
+            const bDiagram = `<div class="flex flex-col items-center"><span class="text-xs text-white font-semibold">B (Horário, Esquerda na Frente)</span>${getCubeFaceHTML(bStickers, B_COLOR, 'B', true)}</div>`;
+            const bPrimeDiagram = `<div class="flex flex-col items-center"><span class="text-xs text-white font-semibold pt-1">B' (Anti-Horário, Direita na Frente)</span>${getCubeFaceHTML(bStickers, B_COLOR, 'B', false)}</div>`;
+            document.getElementById('diag-b-cw').innerHTML = bDiagram;
+            document.getElementById('diag-b-ccw').innerHTML = bPrimeDiagram;
         }
     </script>
 </body>
