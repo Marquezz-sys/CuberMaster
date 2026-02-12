@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-title" content="CuberMaster" />
+<link rel="manifest" href="/site.webmanifest" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CubeMaster - Método de Camadas</title>
@@ -15,14 +21,13 @@
             color: #e0e0e0;
         }
 
-        /* Cube Colors (Stickers) */
-        .c-w { background-color: #ffffff; } /* White */
-        .c-y { background-color: #f6d32d; } /* Yellow */
-        .c-r { background-color: #e01b24; } /* Red */
-        .c-o { background-color: #ff7800; } /* Orange */
-        .c-g { background-color: #2ec27e; } /* Green */
-        .c-b { background-color: #3584e4; } /* Blue */
-        .c-x { background-color: #444; }    /* Unimportant/Grey */
+        .c-w { background-color: #ffffff; }
+        .c-y { background-color: #f6d32d; }
+        .c-r { background-color: #e01b24; }
+        .c-o { background-color: #ff7800; }
+        .c-g { background-color: #2ec27e; }
+        .c-b { background-color: #3584e4; }
+        .c-x { background-color: #444; }
 
         .cube-face {
             display: grid;
@@ -41,35 +46,24 @@
             border-radius: 2px;
         }
 
-        /* Specific sticker coloring for Margarida Step */
-        .cube-face.margarida .s-center { background-color: #f6d32d; } /* Yellow Center */
-        .cube-face.margarida .s-side-w { background-color: #ffffff; } /* White Piece */
-
-        .nav-btn {
-            transition: all 0.3s ease;
-        }
+        .nav-btn { transition: all 0.3s ease; }
         .nav-btn:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
 
-        /* Animations */
         @keyframes slideIn {
             from { opacity: 0; transform: translateX(20px); }
             to { opacity: 1; transform: translateX(0); }
         }
-        .step-content {
-            animation: slideIn 0.4s ease-out;
-        }
+        .step-content { animation: slideIn 0.4s ease-out; }
 
-        /* Modal Backdrop */
         .modal-overlay {
             z-index: 50;
             background-color: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(5px);
         }
 
-        /* Case-specific display */
         .cube-scenario {
             display: flex;
             flex-direction: column;
@@ -80,10 +74,6 @@
             background-color: #252538;
             border: 1px solid #4a4a6b;
         }
-        .cube-scenario-title {
-            font-weight: bold;
-            font-size: 1.1rem;
-        }
         .alg-box {
             font-family: 'Poppins', sans-serif;
             font-size: 1.3rem;
@@ -93,7 +83,6 @@
             color: #4dd0e1;
             box-shadow: 0 0 5px rgba(77, 208, 225, 0.5);
         }
-
         .action-box {
             background-color: #1f2937;
             padding: 10px;
@@ -108,7 +97,6 @@
 </head>
 <body class="flex flex-col h-screen overflow-hidden">
 
-    <!-- Header (Borda mais escura) -->
     <header class="bg-gray-900 p-4 shadow-lg z-10 flex justify-between items-center border-b border-gray-800">
         <div class="flex items-center gap-3">
             <div class="w-8 h-8 grid grid-cols-2 gap-0.5 animate-pulse">
@@ -121,36 +109,28 @@
                 CubeMaster
             </h1>
         </div>
-        <div class="flex gap-2">
-            <button onclick="toggleNotation()" class="text-sm bg-gray-800 hover:bg-gray-700 px-3 py-1 rounded border border-gray-600">
-                <i class="fas fa-book mr-1"></i> Notação
-            </button>
-        </div>
+        <button onclick="toggleNotation()" class="text-sm bg-gray-800 hover:bg-gray-700 px-3 py-1 rounded border border-gray-600 text-white">
+            <i class="fas fa-book mr-1"></i> Notação
+        </button>
     </header>
 
-    <!-- Main Content Area -->
-    <main class="flex-1 overflow-y-auto relative p-4 md:p-8 flex flex-col items-center" id="main-container">
-        <!-- Content injected via JS -->
+    <main class="flex-1 overflow-y-auto p-4 md:p-8 flex flex-col items-center" id="main-container">
+        <!-- JS Injects Here -->
     </main>
 
-    <!-- Navigation Footer (Borda mais escura) -->
     <footer class="bg-gray-900 p-4 border-t border-gray-800">
         <div class="max-w-2xl mx-auto flex items-center justify-between gap-4">
-            <button id="btn-prev" onclick="prevStep()" class="nav-btn px-4 py-2 rounded-lg bg-gray-700 text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed font-semibold">
+            <button id="btn-prev" onclick="prevStep()" class="nav-btn px-4 py-2 rounded-lg bg-gray-700 text-gray-300 disabled:opacity-50 font-semibold">
                 <i class="fas fa-chevron-left mr-2"></i> Anterior
             </button>
-
-            <!-- Contêiner do Progresso -->
             <div id="progress-container" class="flex flex-col items-center flex-1">
-                <span class="text-xs text-gray-400 uppercase tracking-wider mb-1">Progresso</span>
+                <span class="text-xs text-gray-400 uppercase mb-1">Progresso</span>
                 <div class="w-full h-2 bg-gray-700 rounded-full overflow-hidden">
                     <div id="progress-bar" class="h-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-500" style="width: 0%"></div>
                 </div>
-                <!-- O indicador de passo será gerenciado por JS -->
-                <span id="step-indicator" class="text-xs mt-1 font-mono text-blue-400">1/9</span>
+                <span id="step-indicator" class="text-xs mt-1 font-mono text-blue-400">1/10</span>
             </div>
-
-            <button id="btn-next" onclick="nextStep()" class="nav-btn px-4 py-2 rounded-lg bg-blue-600 text-white shadow-lg shadow-blue-900/50 hover:bg-blue-500 font-semibold">
+            <button id="btn-next" onclick="nextStep()" class="nav-btn px-4 py-2 rounded-lg bg-blue-600 text-white shadow-lg font-semibold">
                 Próximo <i class="fas fa-chevron-right ml-2"></i>
             </button>
         </div>
@@ -158,597 +138,219 @@
 
     <!-- Notation Modal -->
     <div id="notation-modal" class="fixed inset-0 modal-overlay hidden flex items-center justify-center p-4">
-        <div class="bg-gray-800 rounded-xl w-full max-w-4xl lg:max-w-5xl p-6 border border-gray-700 shadow-2xl relative overflow-y-auto max-h-[90vh]">
+        <div class="bg-gray-800 rounded-xl w-full max-w-4xl p-6 border border-gray-700 shadow-2xl relative overflow-y-auto max-h-[90vh]">
             <button onclick="toggleNotation()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
                 <i class="fas fa-times text-xl"></i>
             </button>
-
-            <h2 class="text-2xl font-bold mb-4 text-white pb-2">Linguagem Secreta do Cubo (Notação)</h2>
-            <p class="text-gray-400 text-sm mb-6">Em vez de dizer "Gire a face direita para cima", usamos letras! A direção do giro é sempre como se você estivesse olhando a face.</p>
-
-            <div class="space-y-6">
-
-                <!-- Convenção -->
-                <div class="bg-gray-900 p-4 rounded-lg border border-gray-700">
-                    <h3 class="text-xl font-bold text-yellow-400 mb-2">Regras de Giro:</h3>
-                    <ul class="text-sm list-disc pl-5 space-y-1">
-                        <li><strong>Letra (R, U, F, etc.):</strong> Giro de 90° no **sentido horário** (para frente), olhando diretamente para a face.</li>
-                        <li><strong>Letra' (R', U', F', etc.):</strong> Giro de 90° no **sentido anti-horário** (para trás).</li>
-                        <li><strong>Letra2 (R2, U2, F2, etc.):</strong> Giro de 180° (meia volta).</li>
-                    </ul>
+            <h2 class="text-2xl font-bold mb-4 text-white">Linguagem do Cubo</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div class="bg-gray-900 p-3 rounded text-center border border-gray-700">
+                    <span class="text-2xl font-bold text-red-500">R</span>
+                    <p class="text-xs text-gray-400">Direita para Cima</p>
                 </div>
-
-                <!-- Movimentos Principais com Diagramas Visuais (6 Faces) -->
-                <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-                    <!-- R (Right) - Vermelho -->
-                    <div class="bg-gray-700 p-4 rounded-lg text-center shadow-lg">
-                        <span class="text-4xl font-extrabold text-red-400 block mb-2">R / R'</span>
-                        <span class="text-sm uppercase tracking-wider block mb-3">Face da Direita (Vista Frontal)</span>
-                        <div class="flex flex-col items-center space-y-2">
-                            <div id="diag-r-cw" class="w-full"></div>
-                            <div id="diag-r-ccw" class="w-full"></div>
-                        </div>
-                    </div>
-
-                    <!-- L (Left) - Laranja -->
-                    <div class="bg-gray-700 p-4 rounded-lg text-center shadow-lg">
-                        <span class="text-4xl font-extrabold text-orange-400 block mb-2">L / L'</span>
-                        <span class="text-sm uppercase tracking-wider block mb-3">Face da Esquerda (Vista Frontal)</span>
-                        <div class="flex flex-col items-center space-y-2">
-                            <div id="diag-l-cw" class="w-full"></div>
-                            <div id="diag-l-ccw" class="w-full"></div>
-                        </div>
-                    </div>
-
-                    <!-- U (Up) - Amarelo -->
-                    <div class="bg-gray-700 p-4 rounded-lg text-center shadow-lg">
-                        <span class="text-4xl font-extrabold text-yellow-300 block mb-2">U / U'</span>
-                        <span class="text-sm uppercase tracking-wider block mb-3">Face Superior (Vista Frontal)</span>
-                        <div class="flex flex-col items-center space-y-2">
-                            <div id="diag-u-cw" class="w-full"></div>
-                            <div id="diag-u-ccw" class="w-full"></div>
-                        </div>
-                    </div>
-
-                    <!-- D (Down) - Branco -->
-                    <div class="bg-gray-700 p-4 rounded-lg text-center shadow-lg">
-                        <span class="text-4xl font-extrabold text-white block mb-2">D / D'</span>
-                        <span class="text-sm uppercase tracking-wider block mb-3">Face Inferior (Vista Frontal)</span>
-                        <div class="flex flex-col items-center space-y-2">
-                            <div id="diag-d-cw" class="w-full"></div>
-                            <div id="diag-d-ccw" class="w-full"></div>
-                        </div>
-                    </div>
-
-                    <!-- F (Front) - Verde -->
-                    <div class="bg-gray-700 p-4 rounded-lg text-center shadow-lg">
-                        <span class="text-4xl font-extrabold text-green-400 block mb-2">F / F'</span>
-                        <span class="text-sm uppercase tracking-wider block mb-3">Face Frontal (Vista Frontal)</span>
-                        <div class="flex flex-col items-center space-y-2">
-                            <div id="diag-f-cw" class="w-full"></div>
-                            <div id="diag-f-ccw" class="w-full"></div>
-                        </div>
-                    </div>
-
-                    <!-- B (Back) - Azul -->
-                    <div class="bg-gray-700 p-4 rounded-lg text-center shadow-lg">
-                        <span class="text-4xl font-extrabold text-blue-400 block mb-2">B / B'</span>
-                        <span class="text-sm uppercase tracking-wider block mb-3">Face Traseira (Vista Frontal)</span>
-                        <div class="flex flex-col items-center space-y-2">
-                            <div id="diag-b-cw" class="w-full"></div>
-                            <div id="diag-b-ccw" class="w-full"></div>
-                        </div>
-                    </div>
-
+                <div class="bg-gray-900 p-3 rounded text-center border border-gray-700">
+                    <span class="text-2xl font-bold text-orange-500">L</span>
+                    <p class="text-xs text-gray-400">Esquerda para Baixo</p>
                 </div>
-
-                <!-- Rotação do Cubo -->
-                <div class="bg-gray-900 p-4 rounded-lg border border-gray-700 mt-6">
-                    <h3 class="text-xl font-bold text-yellow-400 mb-2">Girar o Cubo Inteiro (x, y, z)</h3>
-                    <p class="text-sm mb-2">Quando o cubo gira inteiramente (para um novo ponto de vista), usamos letras minúsculas:</p>
-                    <div class="flex justify-around text-center text-sm font-bold font-mono text-white">
-                        <div class="p-2 rounded bg-gray-700">x (Gira como R)</div>
-                        <div class="p-2 rounded bg-gray-700">y (Gira como U)</div>
-                        <div class="p-2 rounded bg-gray-700">z (Gira como F)</div>
-                    </div>
+                <div class="bg-gray-900 p-3 rounded text-center border border-gray-700">
+                    <span class="text-2xl font-bold text-yellow-500">U</span>
+                    <p class="text-xs text-gray-400">Topo p/ Esquerda</p>
                 </div>
-
+                <div class="bg-gray-900 p-3 rounded text-center border border-gray-700">
+                    <span class="text-2xl font-bold text-green-500">F</span>
+                    <p class="text-xs text-gray-400">Frente Sentido Horário</p>
+                </div>
+                <div class="bg-gray-900 p-3 rounded text-center border border-gray-700">
+                    <span class="text-2xl font-bold text-white">D</span>
+                    <p class="text-xs text-gray-400">Base p/ Direita</p>
+                </div>
+                <div class="bg-gray-900 p-3 rounded text-center border border-gray-700">
+                    <span class="text-2xl font-bold text-blue-500">B</span>
+                    <p class="text-xs text-gray-400">Trás Sentido Horário</p>
+                </div>
             </div>
+            <p class="mt-4 text-sm text-gray-400 italic">Dica: Um apóstrofo (') após a letra significa o sentido contrário.</p>
         </div>
     </div>
 
     <script>
-        // --- DATA: Tutorial Content (Passos Reindexados) ---
+        let currentStep = 0;
+
         const tutorialSteps = [
-            // INTRODUÇÃO (Não conta como passo de solução)
             {
                 title: "Boas-vindas ao CubeMaster",
                 content: `
-                    <div class="text-center py-10 max-w-lg mx-auto">
-                        <h1 class="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-yellow-400 mb-4">
-                            Você Consegue!
-                        </h1>
-                        <p class="text-lg text-gray-300 mb-6">
-                            Este é um guia simplificado, passo a passo, para resolver o seu Cubo Mágico 3x3 usando o popular <strong>Método de Camadas (Layer by Layer - LBL)</strong>.
-                        </p>
-
+                    <div class="text-center py-10 max-w-lg mx-auto step-content">
+                        <h1 class="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-yellow-400 mb-4">Você Consegue!</h1>
+                        <p class="text-lg text-gray-300 mb-6">Guia simplificado para resolver o Cubo 3x3 usando o <strong>Método de Camadas</strong>.</p>
                         <div class="bg-gray-800 p-6 rounded-xl border border-blue-600/50 shadow-xl">
                             <i class="fas fa-hand-point-right text-4xl text-blue-400 mb-3"></i>
-                            <h3 class="text-xl font-bold text-white mb-2">9 Passos de Solução</h3>
-                            <p class="text-sm text-gray-400">
-                                Pressione 'Próximo' para começar com o nosso <strong>Passo 1: Entendendo as Peças</strong>.
-                            </p>
-                            <ul class="text-sm text-left mt-3 space-y-1 list-disc list-inside text-gray-300">
-                                <li><strong>Acredite em si:</strong> A confiança é o primeiro passo.</li>
-                                <li><strong>Foco total:</strong> Mantenha a concentração em um passo de cada vez.</li>
-                                <li><strong>A prática leva à magia:</strong> Repita até que se torne fácil!</li>
-                            </ul>
+                            <h3 class="text-xl font-bold text-white mb-2">A Jornada do Mestre</h3>
+                            <p class="text-sm text-gray-400">Aperte 'Próximo' para começar o Passo 1.</p>
                         </div>
-
-                        <p class="text-xs text-gray-500 mt-6">
-                            Você está a apenas 9 passos da solução!
-                        </p>
-                    </div>
-                `
+                    </div>`
             },
-            // PASSO 1: Entendendo as Peças (Passo de Solução 1)
             {
-                title: "Passo 1: Entendendo as Peças",
+                title: "Passo 1: Peças e Anatomia",
                 content: `
-                    <div class="text-center max-w-lg">
-                        <p class="mb-4">O cubo 3x3 tem 3 tipos de peças diferentes. Pense nelas como a família do cubo:</p>
+                    <div class="text-center max-w-lg step-content">
+                        <p class="mb-4">O cubo tem 3 tipos de peças essenciais:</p>
                         <div class="grid grid-cols-3 gap-4 mb-6">
                             <div class="flex flex-col items-center">
-                                <div class="cube-face">
-                                    <div class="sticker c-x"></div><div class="sticker c-x"></div><div class="sticker c-x"></div>
-                                    <div class="sticker c-x"></div><div class="sticker c-y border-2 border-white"></div><div class="sticker c-x"></div>
-                                    <div class="sticker c-x"></div><div class="sticker c-x"></div><div class="sticker c-x"></div>
-                                </div>
-                                <span class="mt-2 text-sm font-bold text-yellow-400">Centros (1 cor)</span>
-                                <p class="text-xs text-gray-400">Sempre ficam no lugar. Eles nos dizem a cor de cada face.</p>
+                                <div class="cube-face"><div class="sticker c-x"></div><div class="sticker c-x"></div><div class="sticker c-x"></div><div class="sticker c-x"></div><div class="sticker c-y border-2 border-white"></div><div class="sticker c-x"></div><div class="sticker c-x"></div><div class="sticker c-x"></div><div class="sticker c-x"></div></div>
+                                <span class="mt-2 text-sm font-bold text-yellow-400">Centros</span>
                             </div>
                             <div class="flex flex-col items-center">
-                                <div class="cube-face">
-                                    <div class="sticker c-x"></div><div class="sticker c-r border-2 border-white"></div><div class="sticker c-x"></div>
-                                    <div class="sticker c-x"></div><div class="sticker c-x"></div><div class="sticker c-x"></div>
-                                    <div class="sticker c-x"></div><div class="sticker c-x"></div><div class="sticker c-x"></div>
-                                </div>
-                                <span class="mt-2 text-sm font-bold text-red-400">Meios (2 cores)</span>
-                                <p class="text-xs text-gray-400">Sãos as nossas <strong>Pétalas</strong> Brancas. Ficam no meio das laterais.</p>
+                                <div class="cube-face"><div class="sticker c-x"></div><div class="sticker c-r border-2 border-white"></div><div class="sticker c-x"></div><div class="sticker c-x"></div><div class="sticker c-x"></div><div class="sticker c-x"></div><div class="sticker c-x"></div><div class="sticker c-x"></div><div class="sticker c-x"></div></div>
+                                <span class="mt-2 text-sm font-bold text-red-400">Meios</span>
                             </div>
                             <div class="flex flex-col items-center">
-                                <div class="cube-face">
-                                    <div class="sticker c-b border-2 border-white"></div><div class="sticker c-x"></div><div class="sticker c-x"></div>
-                                    <div class="sticker c-x"></div><div class="sticker c-x"></div><div class="sticker c-x"></div>
-                                    <div class="sticker c-x"></div><div class="sticker c-x"></div><div class="sticker c-x"></div>
-                                </div>
-                                <span class="mt-2 text-sm font-bold text-blue-400">Quinas (3 cores)</span>
-                                <p class="text-xs text-gray-400">Ficam nos cantos.</p>
+                                <div class="cube-face"><div class="sticker c-b border-2 border-white"></div><div class="sticker c-x"></div><div class="sticker c-x"></div><div class="sticker c-x"></div><div class="sticker c-x"></div><div class="sticker c-x"></div><div class="sticker c-x"></div><div class="sticker c-x"></div><div class="sticker c-x"></div></div>
+                                <span class="mt-2 text-sm font-bold text-blue-400">Quinas</span>
                             </div>
                         </div>
-                        <p class="text-sm bg-gray-800 p-3 rounded">Clique em <strong>"Notação"</strong> no topo para ver as letras que usamos nos movimentos (R, U, F, etc).</p>
-                    </div>
-                `
+                    </div>`
             },
-            // PASSO 2: A Margarida (Passo de Solução 2)
             {
-                title: "Passo 2: A Margarida (A Flor)",
+                title: "Passo 2: A Margarida",
                 content: `
-                    <div class="max-w-xl w-full">
-                        <div class="bg-yellow-900/30 p-4 rounded-xl border border-yellow-700 mb-6 text-center">
-                            <h3 class="text-xl font-bold text-yellow-400 mb-1">OBJETIVO: Levar as 4 <span class="text-white bg-black px-1 rounded font-extrabold">Pétalas Brancas</span> para o Topo Amarelo.</h3>
-                            <p class="text-base text-gray-200">Segure o cubo com o centro <strong>Amarelo</strong> para <strong>CIMA</strong> (o centro Branco fica na base).</p>
-                            <div class="flex justify-center mt-3">
-                                <div class="cube-face margarida w-20 h-20">
-                                    <div class="sticker c-x"></div><div class="sticker s-side-w"></div><div class="sticker c-x"></div>
-                                    <div class="sticker s-side-w"></div><div class="sticker s-center"></div><div class="sticker s-side-w"></div>
-                                    <div class="sticker c-x"></div><div class="sticker s-side-w"></div><div class="sticker c-x"></div>
-                                </div>
-                            </div>
+                    <div class="max-w-xl w-full step-content">
+                        <div class="bg-yellow-900/30 p-4 rounded-xl border border-yellow-700 text-center mb-4">
+                            <h3 class="text-xl font-bold text-yellow-400">Crie as Pétalas</h3>
+                            <p class="text-sm text-gray-200">Coloque 4 meios Brancos ao redor do centro Amarelo.</p>
                         </div>
-
-                        <h4 class="text-xl font-bold text-white mb-4 border-b border-gray-900 pb-2">Onde a Pétala pode estar:</h4>
-                        <p class="text-sm text-gray-300 mb-4">Você vai procurar uma Pétala branca por vez e movê-la para o topo.</p>
-
-                        <!-- Cenário 1: Peça na Camada do Meio (Barriga) -->
-                        <div class="cube-scenario mb-4">
-                            <span class="cube-scenario-title text-blue-400"><strong>CASO 1: A Pétala está na Camada do Meio</strong></span>
-                            <p class="text-sm text-gray-300">
-                                A Pétala (o adesivo branco) está na <strong>camada do meio</strong>, e o adesivo branco está virado para a lateral (para você ou para o lado).
-                            </p>
-                            <div class="text-center w-full">
-                                <p class="text-sm font-bold text-white mb-2">O que fazer? (Movimento Simples)</p>
-                                <div class="action-box">
-                                    <strong>1. Gire o Topo (U):</strong> Mova o topo (U) para colocar um lugar VAZIO da Margarida em cima desta Pétala.
-                                </div>
-                                <div class="action-box mt-2">
-                                    <strong>2. Suba:</strong> Gire a face da lateral (R, F, L ou B) <strong>apenas uma vez</strong> (90 graus) para subir a Pétala.
-                                </div>
-                                <div class="alg-box mt-3">
-                                    R (ou um giro simples)
-                                </div>
-                                <p class="text-xs text-gray-400 mt-2">Atenção para não estragar as outras Pétalas que já subiram!</p>
-                            </div>
-                        </div>
-
-                        <!-- Cenário 2: Peça na Camada da Base (Branco p/ Lateral) -->
-                        <div class="cube-scenario mb-4">
-                            <span class="cube-scenario-title text-red-400"><strong>CASO 2: A Pétala está na Base e o Branco olha para o Lado</strong></span>
-                            <p class="text-sm text-gray-300">
-                                A Pétala está na camada de baixo, e o adesivo branco está virado para a lateral.
-                            </p>
-                            <div class="text-center w-full">
-                                <p class="text-sm font-bold text-white mb-2">O que fazer? (Giro Rápido)</p>
-                                <div class="action-box">
-                                    <strong>1. Gire Duas Vezes:</strong> Olhe para a face onde a Pétala está. Gire essa face (F) <strong>duas vezes seguidas</strong> (180 graus).
-                                </div>
-                                <div class="alg-box mt-3">
-                                    F2 (Dois giros)
-                                </div>
-                                <p class="text-xs text-gray-400 mt-2">
-                                    Isso a leva diretamente do fundo para o topo de uma vez só!
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- Cenário 3: Peça na Camada da Base (Branco p/ Baixo) -->
                         <div class="cube-scenario">
-                            <span class="cube-scenario-title text-yellow-400"><strong>CASO 3: A Pétala está na Base e o Branco olha para o Chão</strong></span>
-                            <p class="text-sm text-gray-300">
-                                A Pétala está na camada de baixo, e o adesivo branco está virado para o chão (D).
-                            </p>
-                            <div class="text-center w-full">
-                                <p class="text-sm font-bold text-white mb-2">O que fazer? (Truque de 2 Passos)</p>
-
-                                <div class="action-box">
-                                    <strong>1. Mova a Base (D):</strong> Gire a camada de baixo (D) até que a Pétala fique embaixo de um lugar VAZIO da Margarida.
-                                </div>
-
-                                <div class="action-box mt-2">
-                                    <strong>2. Gire Duas Vezes:</strong> Gire a lateral que está com a Pétala <strong>duas vezes</strong> (F2). Ela sobe!
-                                </div>
-
-                                <div class="alg-box mt-3">
-                                    D (ou D') e depois F2
-                                </div>
-                                <p class="text-xs text-gray-400 mt-2">
-                                    Você primeiro a coloca embaixo de um lugar vazio, e depois sobe com F2.
-                                </p>
-                            </div>
+                            <p class="text-sm text-gray-300">Se a pétala está na lateral:</p>
+                            <div class="alg-box">R ou F</div>
+                            <p class="text-xs text-gray-400 italic">Mova o topo (U) para não "atropelar" uma pétala já pronta.</p>
                         </div>
-
-                        <div class="text-sm text-center mt-6 bg-green-900/30 p-3 rounded-lg border border-green-700">
-                            <strong>Lembre-se:</strong> Repita um desses 3 casos até ter as 4 <span class="font-bold">Pétalas</span> brancas ao redor do miolo amarelo.
-                        </div>
-                    </div>
-                `
+                    </div>`
             },
-            // PASSO 3: Cruz Branca Perfeita (Passo de Solução 3)
             {
-                title: "Passo 3: A Cruz Branca Perfeita",
+                title: "Passo 3: A Cruz Branca",
                 content: `
-                    <div class="max-w-xl w-full">
-                        <h3 class="font-bold text-xl text-white mb-4">O Fim da Margarida:</h3>
-                        <p class="mb-4">Agora, vamos pegar as 4 <strong>Pétalas</strong> que estão no topo Amarelo e descer elas para formar a <strong>Cruz Branca Perfeita</strong> na base (embaixo, onde está o centro branco).</p>
-
+                    <div class="max-w-xl w-full step-content">
+                        <p class="mb-4">Agora vamos descer as pétalas para o lado Branco.</p>
                         <div class="space-y-4">
-                            <div class="flex items-center gap-4 bg-gray-800 p-4 rounded-lg">
-                                <div class="text-4xl font-bold text-yellow-400 flex-shrink-0"><i class="fas fa-undo"></i></div>
-                                <div>
-                                    <h3 class="font-bold text-white">1. Gire e Combine a Cor</h3>
-                                    <p class="text-sm text-gray-300">Gire o TOPO (U) até que a cor da frente da Pétala (ex: Vermelho) <strong>combine</strong> com o centro da lateral (Vermelho com Vermelho).</p>
-                                </div>
+                            <div class="bg-gray-800 p-4 rounded-lg flex items-center gap-4">
+                                <div class="bg-blue-600 w-10 h-10 flex items-center justify-center rounded font-bold">1</div>
+                                <p class="text-sm">Alinhe a cor lateral da pétala com seu centro.</p>
                             </div>
-
-                            <div class="flex items-center gap-4 bg-gray-800 p-4 rounded-lg">
-                                <div class="text-3xl font-bold text-blue-400 pl-4 flex-shrink-0">F2</div>
-                                <div>
-                                    <h3 class="font-bold text-white">2. Gire Duas Vezes e Desça</h3>
-                                    <p class="text-sm text-gray-300">Gire a face da frente duas vezes (F2). A Pétala desce para o lugar certo na Cruz Branca!</p>
-                                </div>
-                            </div>
-
-                            <div class="text-center mt-4 bg-blue-900/20 p-3 rounded border border-blue-800/50">
-                                <strong>Repita</strong> isso para as 4 Pétalas. No final, vire o cubo para baixo: Você terá uma cruz branca perfeita!
+                            <div class="bg-gray-800 p-4 rounded-lg flex items-center gap-4">
+                                <div class="bg-blue-600 w-10 h-10 flex items-center justify-center rounded font-bold">2</div>
+                                <p class="text-sm">Gire a face 2 vezes: <strong>F2</strong>.</p>
                             </div>
                         </div>
-                    </div>
-                `
+                    </div>`
             },
-            // PASSO 4: Cantinhos da 1ª Camada (Passo de Solução 4)
             {
-                title: "Passo 4: Cantinhos da 1ª Camada",
+                title: "Passo 4: Cantos Brancos",
                 content: `
-                    <div class="max-w-xl w-full">
-                        <p class="mb-2 font-bold text-red-400">Vire o cubo: Cruz Branca AGORA para BAIXO.</p>
-                        <p class="mb-4 text-sm text-gray-300">Vamos encaixar os cantinhos (quinas) brancos usando um movimento que parece mágico, mas é só treino!</p>
-
-                        <div class="grid md:grid-cols-2 gap-6 mt-4">
-                            <div class="bg-gray-800 p-4 rounded-xl border border-gray-600">
-                                <h4 class="font-bold text-yellow-400 mb-2"><strong>1. Preparar o Cantinho</strong></h4>
-                                <p class="text-sm mb-2">Procure um cantinho com BRANCO na camada de cima.</p>
-                                <p class="text-sm">Gire o topo (U) para colocá-lo <strong>em cima</strong> de onde ele deve entrar. (Ex: o cantinho Branco-Verde-Vermelho deve ficar sobre os centros Verde e Vermelho.)</p>
-                            </div>
-
-                            <div class="bg-gray-800 p-4 rounded-xl border border-gray-600">
-                                <h4 class="font-bold text-blue-400 mb-2"><strong>2. O Movimento Mágico (R U R' U')</strong></h4>
-                                <p class="text-sm mb-2">Segure o cubo de forma que o cantinho esteja na sua direita frontal.</p>
-                                <div class="text-2xl font-mono bg-black p-3 rounded text-center text-white border border-gray-600 shadow-inner">
-                                    R U R' U'
-                                </div>
-                                <p class="text-xs text-gray-400 mt-2 text-center">Repita este movimento (2, 4 ou 6 vezes) até o adesivo branco do cantinho olhar para baixo e ele encaixar perfeitamente.</p>
-                            </div>
+                    <div class="max-w-xl w-full step-content">
+                        <p class="mb-4 text-center">Coloque a Cruz Branca virada para <strong>BAIXO</strong>.</p>
+                        <div class="bg-gray-800 p-4 rounded-xl border border-gray-600 text-center">
+                            <h4 class="font-bold text-blue-400 mb-2">O Algoritmo "Sexy Move"</h4>
+                            <div class="alg-box mb-3">R U R' U'</div>
+                            <p class="text-sm">Coloque o canto branco acima de onde ele deve ir e repita o movimento até encaixar.</p>
                         </div>
-                        <p class="text-xs text-center mt-4 text-green-300 bg-green-900/20 p-2 rounded">
-                            Faça isso para os 4 cantinhos. A primeira camada (Face Branca e laterais de cima) estará completa!
-                        </p>
-                    </div>
-                `
+                    </div>`
             },
-            // PASSO 5: A Segunda Camada (Passo de Solução 5)
             {
-                title: "Passo 5: A Segunda Camada",
+                title: "Passo 5: Segunda Camada",
                 content: `
-                    <div class="max-w-2xl w-full">
-                        <h3 class="font-bold text-xl text-white mb-4">O Segredo das Areias</h3>
-                        <p class="mb-4 text-sm">Olhe no <strong>topo (camada U)</strong> por peças de meio que <strong class="text-red-400">NÃO tenham a cor Amarela</strong> (ex: Verde/Vermelho, Laranja/Azul). Vamos encaixar essas peças nas laterais, na "barriga" do cubo.</p>
-
+                    <div class="max-w-xl w-full step-content">
+                        <p class="mb-4">Vamos preencher os meios das laterais.</p>
                         <div class="grid md:grid-cols-2 gap-4">
-                            <!-- Caso Direita -->
-                            <div class="bg-gray-800 p-4 rounded-lg relative overflow-hidden group">
-                                <div class="absolute top-0 right-0 bg-blue-600 text-xs px-2 py-1 rounded-bl">A peça tem que ir para a Direita</div>
-                                <p class="text-sm mb-2 mt-4">1. Gire o Topo (U) para que a cor da frente da peça combine com o centro.</p>
-                                <p class="font-bold text-lg text-yellow-400 mb-2">2. Mova a peça para o lado OPOSTO:</p>
-                                <div class="font-mono bg-black/50 p-2 rounded text-blue-300 text-center text-lg mb-2">
-                                    U R U' R' | U' F' U F
-                                </div>
-                                <p class="text-xs text-gray-400">Dica: "Afasta, sobe a direita, volta, desce. Vira o cubo, afasta, sobe a frente, volta, desce."</p>
+                            <div class="bg-gray-800 p-3 rounded">
+                                <span class="block text-xs font-bold text-blue-400">PARA DIREITA:</span>
+                                <div class="text-sm font-mono mt-1">U R U' R' U' F' U F</div>
                             </div>
-
-                            <!-- Caso Esquerda -->
-                            <div class="bg-gray-800 p-4 rounded-lg relative overflow-hidden">
-                                <div class="absolute top-0 right-0 bg-green-600 text-xs px-2 py-1 rounded-bl">A peça tem que ir para a Esquerda</div>
-                                <p class="text-sm mb-2 mt-4">1. Gire o Topo (U) para combinar a cor da frente.</p>
-                                <p class="font-bold text-lg text-yellow-400 mb-2">2. Mova a peça para o lado OPOSTO:</p>
-                                <div class="font-mono bg-black/50 p-2 rounded text-green-300 text-center text-lg mb-2">
-                                    U' L' U L | U F U' F'
-                                </div>
-                                <p class="text-xs text-gray-400">Dica: "É o mesmo movimento de antes, mas tudo ao contrário!"</p>
+                            <div class="bg-gray-800 p-3 rounded">
+                                <span class="block text-xs font-bold text-green-400">PARA ESQUERDA:</span>
+                                <div class="text-sm font-mono mt-1">U' L' U L U F U' F'</div>
                             </div>
                         </div>
-                        <p class="text-xs text-center mt-4 text-orange-300">Repita até que as 4 laterais do meio estejam coloridas e corretas. Se a peça estiver no lugar errado, use um dos movimentos para tirá-la.</p>
-                    </div>
-                `
+                    </div>`
             },
-            // PASSO 6: Cruz Amarela (Passo de Solução 6)
             {
                 title: "Passo 6: Cruz Amarela",
                 content: `
-                    <div class="max-w-xl w-full text-center">
-                        <p class="mb-4">Vire o cubo: Olhe para o topo Amarelo. Queremos uma <strong>Cruz Amarela</strong> (como a Margarida, mas amarela!). Você terá um destes 3 desenhos:</p>
-
-                        <div class="flex justify-center gap-6 mb-6">
-                            <div class="flex flex-col items-center">
-                                <div class="cube-face w-16 h-16">
-                                    <div class="sticker c-x"></div><div class="sticker c-x"></div><div class="sticker c-x"></div>
-                                    <div class="sticker c-x"></div><div class="sticker c-y"></div><div class="sticker c-x"></div>
-                                    <div class="sticker c-x"></div><div class="sticker c-x"></div><div class="sticker c-x"></div>
-                                </div>
-                                <span class="text-xs mt-1">1. Só o Ponto</span>
-                            </div>
-                            <div class="flex flex-col items-center">
-                                <div class="cube-face w-16 h-16">
-                                    <div class="sticker c-x"></div><div class="sticker c-y"></div><div class="sticker c-x"></div>
-                                    <div class="sticker c-y"></div><div class="sticker c-y"></div><div class="sticker c-x"></div>
-                                    <div class="sticker c-x"></div><div class="sticker c-x"></div><div class="sticker c-x"></div>
-                                </div>
-                                <span class="text-xs mt-1">2. O "L" (Olhando para 9h)</span>
-                            </div>
-                            <div class="flex flex-col items-center">
-                                <div class="cube-face w-16 h-16">
-                                    <div class="sticker c-x"></div><div class="sticker c-x"></div><div class="sticker c-x"></div>
-                                    <div class="sticker c-y"></div><div class="sticker c-y"></div><div class="sticker c-y"></div>
-                                    <div class="sticker c-x"></div><div class="sticker c-x"></div><div class="sticker c-x"></div>
-                                </div>
-                                <span class="text-xs mt-1">3. A Linha</span>
-                            </div>
-                        </div>
-
-                        <div class="bg-gray-800 p-5 rounded-xl border border-yellow-600/50 shadow-lg shadow-yellow-900/20">
-                            <h3 class="text-xl font-bold text-yellow-400 mb-2">O Único Movimento Necessário:</h3>
-                            <div class="text-2xl font-mono font-bold bg-black p-4 rounded mb-2 tracking-widest">
-                                F R U R' U' F'
-                            </div>
-                            <ul class="text-left text-sm text-gray-300 space-y-1 list-disc pl-5">
-                                <li><strong>Se for o Ponto:</strong> Faça uma vez -> vira "L".</li>
-                                <li><strong>Se for o "L":</strong> Deixe ele na posição de relógio (9 horas). Faça uma vez -> vira Linha.</li>
-                                <li><strong>Se for a Linha:</strong> Deixe na horizontal. Faça uma vez -> Vira a Cruz!</li>
-                            </ul>
-                        </div>
-                    </div>
-                `
+                    <div class="max-w-xl w-full step-content text-center">
+                        <p class="mb-4">Não importa se você tem um "Ponto", um "L" ou uma "Linha":</p>
+                        <div class="alg-box">F (R U R' U') F'</div>
+                        <p class="text-sm mt-3 text-gray-400">Repita até formar uma cruz amarela no topo.</p>
+                    </div>`
             },
-            // PASSO 7: Alinhar a Cruz Amarela (Passo de Solução 7)
             {
-                title: "Passo 7: Alinhar a Cruz Amarela",
+                title: "Passo 7: Alinhar Cruz",
                 content: `
-                    <div class="max-w-xl w-full">
-                        <p class="mb-4 text-center text-sm">A Cruz Amarela está feita, mas as laterais (meios) dela precisam combinar com os centros (Vermelho com Vermelho, Azul com Azul, etc.). Gire o topo (U) até alinhar o máximo que conseguir.</p>
-
-                        <div class="bg-gray-800 p-6 rounded-xl border border-gray-600">
-                            <h3 class="font-bold text-center text-blue-300 mb-3">O Algoritmo "Sune" para Alinhar</h3>
-                            <p class="text-sm text-center mb-4">Você vai ter 2 peças alinhadas. Deixe uma na frente e uma na direita. Se forem opostas, deixe uma na frente e uma atrás.</p>
-
-                            <div class="text-2xl font-mono font-bold bg-black p-4 rounded mb-2 tracking-widest">
-                                R U R' U R U2 R'
-                            </div>
-
-                            <div class="flex justify-between text-xs text-gray-400 border-t border-gray-700 pt-3">
-                                <span>(Sobe Direita)</span>
-                                <span>(Volta Topo)</span>
-                                <span>(Desce Direita)</span>
-                                <span>(Volta Topo)</span>
-                            </div>
+                    <div class="max-w-xl w-full step-content">
+                        <p class="mb-4">Gire the topo até que os meios da cruz amarela combinem com as cores laterais.</p>
+                        <div class="cube-scenario">
+                            <p class="text-sm">Se apenas dois baterem, use o "Sune":</p>
+                            <div class="alg-box">R U R' U R U2 R'</div>
                         </div>
-                         <p class="text-xs text-center mt-3 text-gray-400">Repita até todos os 4 meios laterais estarem alinhados corretamente com seus centros.</p>
-                    </div>
-                `
+                    </div>`
             },
-            // PASSO 8: Posicionar Cantinhos Amarelos (Passo de Solução 8)
             {
-                title: "Passo 8: Posicionar Cantinhos Amarelos",
+                title: "Passo 8: Posicionar Quinas",
                 content: `
-                    <div class="max-w-xl w-full">
-                        <p class="mb-2 text-center text-sm">Vamos colocar os cantinhos (quinas) amarelos no lugar certo, mesmo que o adesivo amarelo ainda não esteja virado para cima.</p>
-
-                        <div class="grid gap-4 mt-4">
-                            <div class="bg-gray-800 p-4 rounded-lg">
-                                <div class="flex items-center justify-between mb-2">
-                                    <span class="font-bold text-green-400">1. Ache um Cantinho Certo</span>
-                                    <span class="text-xs bg-gray-700 px-2 py-1 rounded">Deixe na Frente Direita Superior</span>
-                                </div>
-                                <p class="text-sm mb-2">Um cantinho está "certo" se ele tem as cores dos 3 centros que o cercam (ex: se tiver Verde/Laranja/Amarelo e estiver entre os centros Verde, Laranja e Amarelo).</p>
-                                <div class="font-mono bg-black p-3 rounded text-center text-lg mb-2">
-                                    U R U' L' U R' U' L
-                                </div>
-                                <p class="text-xs text-gray-400 text-center">Isso troca os outros 3 cantinhos de lugar.</p>
-                            </div>
-
-                            <div class="bg-gray-800 p-4 rounded-lg opacity-75">
-                                <div class="flex items-center justify-between mb-2">
-                                    <span class="font-bold text-gray-400">Se nenhum estiver certo:</strong>
-                                </div>
-                                <p class="text-sm">Faça o movimento de qualquer lugar. Depois, um deles vai estar certo e você pode continuar.</p>
-                            </div>
-                        </div>
-                    </div>
-                `
+                    <div class="max-w-xl w-full step-content">
+                        <p class="mb-4">Vamos colocar as quinas no lugar certo (mesmo que viradas).</p>
+                        <div class="alg-box">U R U' L' U R' U' L</div>
+                        <p class="text-sm mt-3">Procure uma quina correta, deixe-a na sua direita e faça o movimento.</p>
+                    </div>`
             },
-            // PASSO 9: Virar os Cantinhos (Passo de Solução 9)
             {
-                title: "Passo 9: Virar os Cantinhos (Final!)",
+                title: "Passo 9: Finalizar!",
                 content: `
-                    <div class="max-w-xl w-full text-center">
-                        <p class="mb-4 font-bold text-red-400 uppercase tracking-widest animate-pulse">Este é o Final! Não entre em Pânico!</p>
-                        <p class="mb-4 text-sm">O objetivo é virar o adesivo amarelo de cada cantinho para cima. <strong class="text-white">NÃO GIRE O CUBO INTEIRO NAS MÃOS!</strong></p>
-
-                        <div class="bg-gray-800 p-6 rounded-xl border-2 border-red-500/50 mb-4">
-                            <p class="text-sm font-bold text-yellow-400 mb-3 border-b border-gray-900 pb-2">FOCO: Apenas um cantinho por vez!</p>
-
-                            <p class="text-sm mb-3">1. Coloque o cantinho "errado" (que precisa virar) na posição <strong>Frente-Direita-Topo</strong>.</p>
-                            <p class="text-sm mb-3">2. Faça o movimento Mágico, repetindo até o Amarelo olhar para cima:</p>
-
-                            <div class="text-3xl font-bold font-mono text-yellow-400 mb-3 bg-black/40 p-2 rounded">
-                                R' D' R D
-                            </div>
-
-                            <p class="text-sm text-gray-300 mb-4">
-                                <strong>O que acontece?</strong> O cubo vai parecer uma bagunça, mas isso é <strong class="text-red-300">NORMAL e TEMPORÁRIO!</strong>
-                                Você DEVE fazer o <strong>R' D' R D</strong> até o adesivo Amarelo do cantinho que você está olhando subir.
-                                <span class="font-bold text-green-400">SEMPRE termine o movimento completo (R' D' R D)</span>.
-                            </p>
-
-                            <div class="border-t border-gray-600 pt-3 mt-3">
-                                <p class="text-sm font-bold text-blue-300 mb-1">Próximo Cantinho?</p>
-                                <p class="text-sm">Quando o primeiro cantinho estiver certo, <strong>NÃO GIRE O CUBO INTEIRO!</strong></p>
-                                <p class="text-sm mt-1 font-extrabold text-white bg-blue-900/40 p-1 rounded-md">
-                                    Gire APENAS a Camada de Cima (U)
-                                </p>
-                                <p class="text-xs text-gray-400 mt-2"> para trazer o próximo cantinho "errado" para a posição Frente-Direita. Repita o <strong>R' D' R D</strong> até o cubo estar resolvido!</p>
-                            </div>
-                        </div>
-                    </div>
-                `
-            },
-            // FINAL (Não conta como passo de solução)
-            {
-                title: "Parabéns!",
-                content: `
-                    <div class="text-center py-10">
-                        <i class="fas fa-trophy text-6xl text-yellow-400 mb-6 animate-bounce"></i>
-                        <h2 class="text-3xl font-bold text-white mb-4">Cubo Resolvido!</h2>
-                        <p class="text-gray-300 mb-8 max-w-md mx-auto">Você completou o método de camadas. Com prática, você fará isso cada vez mais rápido. Você é um gênio!</p>
-                        <button onclick="currentStep = 0; renderStep();" class="bg-blue-600 text-white px-8 py-3 rounded-full font-bold shadow-lg hover:bg-blue-500 transition-all transform hover:scale-105">
-                            Recomeçar
-                        </button>
-                    </div>
-                `
+                    <div class="max-w-xl w-full step-content text-center">
+                        <h2 class="text-3xl font-bold text-green-400 mb-4">O Grand Finale</h2>
+                        <p class="mb-4">Vire o cubo: Amarelo para <strong>BAIXO</strong>.</p>
+                        <p class="text-sm mb-4">Nas quinas que faltam, repita:</p>
+                        <div class="alg-box mb-4">R U R' U'</div>
+                        <p class="text-xs text-red-400"><strong>IMPORTANTE:</strong> Quando uma quina ficar pronta, gire APENAS a camada de baixo (D) para a próxima quina. Não gire o cubo!</p>
+                    </div>`
             }
         ];
 
-        // --- GLOBAL APP LOGIC ---
-        let currentStep = 0;
-        const totalSolvingSteps = 9; // Total de passos de SOLUÇÃO (Excluindo Introdução e Final)
-
         function renderStep() {
             const container = document.getElementById('main-container');
-            const stepData = tutorialSteps[currentStep];
-            const totalScreens = tutorialSteps.length;
+            const step = tutorialSteps[currentStep];
 
-            // --- PROGRESS LOGIC ---
-            let solvingStepNumber = 0;
-            let percentage = 0;
-
-            // Check if we are on the first or last screen (non-solving steps)
-            if (currentStep === 0) {
-                 // Introdução
-                solvingStepNumber = 0;
-                percentage = 0;
-                document.getElementById('step-indicator').innerText = `Início`;
-            } else if (currentStep === totalScreens - 1) {
-                // Último Passo: 100% de progresso
-                solvingStepNumber = totalSolvingSteps;
-                percentage = 100;
-                document.getElementById('step-indicator').innerText = "Concluído!";
-            } else {
-                // Passos de Solução (1 a 9)
-                // currentStep 1 is Solving Step 1, currentStep 2 is Solving Step 2, etc.
-                solvingStepNumber = currentStep;
-                percentage = (solvingStepNumber / totalSolvingSteps) * 100;
-                document.getElementById('step-indicator').innerText = `Passo ${solvingStepNumber}/${totalSolvingSteps}`;
-            }
-
-            // Update Progress UI
-            document.getElementById('progress-bar').style.width = `${percentage}%`;
-
-            // --- BUTTONS STATE ---
-            document.getElementById('btn-prev').disabled = currentStep === 0;
-
-            const btnNext = document.getElementById('btn-next');
-            if (currentStep === totalScreens - 1) {
-               // Último Passo: Recomeçar
-               btnNext.innerHTML = 'Recomeçar <i class="fas fa-redo ml-2"></i>';
-               btnNext.onclick = () => { currentStep = 0; renderStep(); };
-               btnNext.classList.remove('bg-blue-600');
-               btnNext.classList.add('bg-green-600', 'shadow-green-900/50');
-            } else {
-               // Outros Passos
-               btnNext.innerHTML = 'Próximo <i class="fas fa-chevron-right ml-2"></i>';
-               btnNext.onclick = nextStep;
-               btnNext.classList.add('bg-blue-600');
-               btnNext.classList.remove('bg-green-600', 'shadow-green-900/50');
-            }
-
-            // --- INJECT CONTENT ---
-            container.innerHTML = '';
-
-            const contentWrapper = document.createElement('div');
-            contentWrapper.className = 'step-content flex flex-col items-center w-full max-w-4xl mx-auto';
-
-            contentWrapper.innerHTML = `
-                <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 text-center">${stepData.title}</h2>
-                ${stepData.content}
+            container.innerHTML = `
+                <div class="w-full flex flex-col items-center">
+                    <h2 class="text-2xl font-bold mb-6 text-white text-center">${step.title}</h2>
+                    ${step.content}
+                </div>
             `;
 
-            container.appendChild(contentWrapper);
+            // Update navigation
+            document.getElementById('btn-prev').disabled = currentStep === 0;
+            const nextBtn = document.getElementById('btn-next');
+            if (currentStep === tutorialSteps.length - 1) {
+                nextBtn.innerHTML = 'Recomeçar <i class="fas fa-redo ml-2"></i>';
+                nextBtn.classList.replace('bg-blue-600', 'bg-green-600');
+            } else {
+                nextBtn.innerHTML = 'Próximo <i class="fas fa-chevron-right ml-2"></i>';
+                nextBtn.classList.replace('bg-green-600', 'bg-blue-600');
+            }
+
+            // Update progress
+            const progress = (currentStep / (tutorialSteps.length - 1)) * 100;
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+            document.getElementById('step-indicator').innerText = `${currentStep + 1}/${tutorialSteps.length}`;
+
+            container.scrollTop = 0;
         }
 
         function nextStep() {
             if (currentStep < tutorialSteps.length - 1) {
                 currentStep++;
-                renderStep();
+            } else {
+                currentStep = 0;
             }
+            renderStep();
         }
 
         function prevStep() {
@@ -761,145 +363,9 @@
         function toggleNotation() {
             const modal = document.getElementById('notation-modal');
             modal.classList.toggle('hidden');
-            if (!modal.classList.contains('hidden')) {
-                renderNotationDiagrams();
-            }
         }
 
-        // Initialize App
-        document.addEventListener('DOMContentLoaded', () => {
-            renderStep();
-            // Pre-render diagrams once to ensure they are available
-            renderNotationDiagrams();
-        });
-
-        // Keyboard Support
-        document.addEventListener('keydown', (e) => {
-            if (e.key === "ArrowRight" && document.getElementById('notation-modal').classList.contains('hidden')) nextStep();
-            if (e.key === "ArrowLeft" && document.getElementById('notation-modal').classList.contains('hidden')) prevStep();
-        });
-
-
-        // --- NOTATION DIAGRAM LOGIC ---
-        function getCubeFaceHTML(stickers, centerColor, moveType, isCW) {
-            let html = `<div class="w-24 h-24 mx-auto my-1 border-2 border-gray-500 relative overflow-hidden flex items-center justify-center">`;
-
-            // Add grid layout
-            html += `<div class="grid grid-cols-3 gap-0.5 p-0.5 w-full h-full absolute top-0 left-0" style="background-color: #000;">`;
-
-            stickers.forEach((stickerClass, index) => {
-                const isCenter = index === 4;
-                const finalClass = isCenter ? centerColor : stickerClass;
-                let highlightClass = '';
-
-                // Add visual hints for the rotating layer (based on Front Face view)
-                if (moveType === 'R') {
-                    if (index % 3 === 2) highlightClass = 'border-2 border-yellow-400 shadow-[0_0_8px_rgba(252,211,77,0.7)]'; // Coluna direita
-                } else if (moveType === 'L') {
-                    if (index % 3 === 0) highlightClass = 'border-2 border-yellow-400 shadow-[0_0_8px_rgba(252,211,77,0.7)]'; // Coluna esquerda
-                } else if (moveType === 'U') {
-                    if (index < 3) highlightClass = 'border-2 border-yellow-400 shadow-[0_0_8px_rgba(252,211,77,0.7)]'; // Fila superior
-                } else if (moveType === 'D') {
-                    if (index > 5) highlightClass = 'border-2 border-yellow-400 shadow-[0_0_8px_rgba(252,211,77,0.7)]'; // Fila inferior
-                } else if (moveType === 'F' || moveType === 'B') {
-                    highlightClass = 'border-2 border-yellow-400 shadow-[0_0_8px_rgba(252,211,77,0.7)]'; // Toda a face
-                }
-
-                html += `<div class="sticker ${finalClass} ${highlightClass}" style="opacity: ${isCenter ? '1' : '0.9'}"></div>`;
-            });
-            html += `</div>`;
-
-            // Add arrows to show rotation direction (Viewed from Front Face)
-            let iconClass = '';
-
-            // R: up/down on right column
-            if (moveType === 'R') {
-                iconClass = isCW ? 'fa-arrow-up' : 'fa-arrow-down'; // R (Horário) sobe
-                html += `<i class="fas ${iconClass} text-3xl text-white absolute right-1.5"></i>`;
-            }
-            // L: up/down on left column
-            else if (moveType === 'L') {
-                iconClass = isCW ? 'fa-arrow-down' : 'fa-arrow-up'; // L (Horário) desce (vista F)
-                html += `<i class="fas ${iconClass} text-3xl text-white absolute left-1.5"></i>`;
-            }
-            // U: left/right on top row
-            else if (moveType === 'U') {
-                iconClass = isCW ? 'fa-arrow-left' : 'fa-arrow-right'; // U (Horário) move para a esquerda
-                html += `<i class="fas ${iconClass} text-3xl text-white absolute top-1.5"></i>`;
-            }
-            // D: left/right on bottom row
-            else if (moveType === 'D') {
-                iconClass = isCW ? 'fa-arrow-right' : 'fa-arrow-left'; // D (Horário) move para a direita (vista F)
-                html += `<i class="fas ${iconClass} text-3xl text-white absolute bottom-1.5"></i>`;
-            }
-            // F: circular on the face
-            else if (moveType === 'F') {
-                iconClass = isCW ? 'fa-rotate-right' : 'fa-rotate-left';
-                html += `<i class="fas ${iconClass} text-4xl text-white absolute"></i>`;
-            }
-            // B: circular (inverted from F, as it's viewed from the opposite side)
-            else if (moveType === 'B') {
-                iconClass = isCW ? 'fa-rotate-left' : 'fa-rotate-right'; // B (Horário) é Anti-Horário na vista F
-                html += `<i class="fas ${iconClass} text-4xl text-white absolute"></i>`;
-            }
-
-            html += `</div>`;
-            return html;
-        }
-
-        function renderNotationDiagrams() {
-            // Definições de cores para os diagramas (Centro)
-            const R_COLOR = 'c-r'; // Vermelho (Right)
-            const L_COLOR = 'c-o'; // Laranja (Left)
-            const U_COLOR = 'c-y'; // Amarelo (Up)
-            const D_COLOR = 'c-w'; // Branco (Down)
-            const F_COLOR = 'c-g'; // Verde (Front)
-            const B_COLOR = 'c-b'; // Azul (Back)
-
-            // Array com 9 stickers da mesma cor para cada diagrama (para ter uma cor de fundo)
-            const rStickers = Array(9).fill(R_COLOR);
-            const lStickers = Array(9).fill(L_COLOR);
-            const uStickers = Array(9).fill(U_COLOR);
-            const dStickers = Array(9).fill(D_COLOR);
-            const fStickers = Array(9).fill(F_COLOR);
-            const bStickers = Array(9).fill(B_COLOR);
-
-            // --- R (Right) ---
-            const rDiagram = `<div class="flex flex-col items-center"><span class="text-xs text-white font-semibold">R (Horário, Sobe)</span>${getCubeFaceHTML(rStickers, R_COLOR, 'R', true)}</div>`;
-            const rPrimeDiagram = `<div class="flex flex-col items-center"><span class="text-xs text-white font-semibold pt-1">R' (Anti-Horário, Desce)</span>${getCubeFaceHTML(rStickers, R_COLOR, 'R', false)}</div>`;
-            document.getElementById('diag-r-cw').innerHTML = rDiagram;
-            document.getElementById('diag-r-ccw').innerHTML = rPrimeDiagram;
-
-            // --- L (Left) ---
-            const lDiagram = `<div class="flex flex-col items-center"><span class="text-xs text-white font-semibold">L (Horário, Desce)</span>${getCubeFaceHTML(lStickers, L_COLOR, 'L', true)}</div>`;
-            const lPrimeDiagram = `<div class="flex flex-col items-center"><span class="text-xs text-white font-semibold pt-1">L' (Anti-Horário, Sobe)</span>${getCubeFaceHTML(lStickers, L_COLOR, 'L', false)}</div>`;
-            document.getElementById('diag-l-cw').innerHTML = lDiagram;
-            document.getElementById('diag-l-ccw').innerHTML = lPrimeDiagram;
-
-            // --- U (Up) ---
-            const uDiagram = `<div class="flex flex-col items-center"><span class="text-xs text-white font-semibold">U (Horário, Esquerda)</span>${getCubeFaceHTML(uStickers, U_COLOR, 'U', true)}</div>`;
-            const uPrimeDiagram = `<div class="flex flex-col items-center"><span class="text-xs text-white font-semibold pt-1">U' (Anti-Horário, Direita)</span>${getCubeFaceHTML(uStickers, U_COLOR, 'U', false)}</div>`;
-            document.getElementById('diag-u-cw').innerHTML = uDiagram;
-            document.getElementById('diag-u-ccw').innerHTML = uPrimeDiagram;
-
-            // --- D (Down) ---
-            const dDiagram = `<div class="flex flex-col items-center"><span class="text-xs text-white font-semibold">D (Horário, Direita)</span>${getCubeFaceHTML(dStickers, D_COLOR, 'D', true)}</div>`;
-            const dPrimeDiagram = `<div class="flex flex-col items-center"><span class="text-xs text-white font-semibold pt-1">D' (Anti-Horário, Esquerda)</span>${getCubeFaceHTML(dStickers, D_COLOR, 'D', false)}</div>`;
-            document.getElementById('diag-d-cw').innerHTML = dDiagram;
-            document.getElementById('diag-d-ccw').innerHTML = dPrimeDiagram;
-
-            // --- F (Front) ---
-            const fDiagram = `<div class="flex flex-col items-center"><span class="text-xs text-white font-semibold">F (Horário, Direita)</span>${getCubeFaceHTML(fStickers, F_COLOR, 'F', true)}</div>`;
-            const fPrimeDiagram = `<div class="flex flex-col items-center"><span class="text-xs text-white font-semibold pt-1">F' (Anti-Horário, Esquerda)</span>${getCubeFaceHTML(fStickers, F_COLOR, 'F', false)}</div>`;
-            document.getElementById('diag-f-cw').innerHTML = fDiagram;
-            document.getElementById('diag-f-ccw').innerHTML = fPrimeDiagram;
-
-            // --- B (Back) ---
-            const bDiagram = `<div class="flex flex-col items-center"><span class="text-xs text-white font-semibold">B (Horário, Esquerda na Frente)</span>${getCubeFaceHTML(bStickers, B_COLOR, 'B', true)}</div>`;
-            const bPrimeDiagram = `<div class="flex flex-col items-center"><span class="text-xs text-white font-semibold pt-1">B' (Anti-Horário, Direita na Frente)</span>${getCubeFaceHTML(bStickers, B_COLOR, 'B', false)}</div>`;
-            document.getElementById('diag-b-cw').innerHTML = bDiagram;
-            document.getElementById('diag-b-ccw').innerHTML = bPrimeDiagram;
-        }
+        window.onload = renderStep;
     </script>
 </body>
 </html>
